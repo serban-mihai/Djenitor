@@ -1,2 +1,4 @@
 # Environment Secrets
 .env
+# Visual Studio Code
+.vscode
