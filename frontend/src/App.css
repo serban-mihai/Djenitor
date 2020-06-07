@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.App-footer {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+}
