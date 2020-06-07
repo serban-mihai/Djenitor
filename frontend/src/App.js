@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import socketIOClient from "socket.io-client";
 import Fretboard from "./components/Fretboard";
 import "./App.css";
 
 const App = () => {
+  const [response, setResponse] = useState("");
+  
   return (
     <div className="App">
       <header className="App-header"></header>

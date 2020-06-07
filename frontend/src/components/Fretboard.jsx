@@ -4,14 +4,14 @@ const ENDPOINT = "http://127.0.0.1:5000";
 
 const Fretboard = (props) => {
 
-  const [response, setResponse] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
-    socket.on("message", data => {
-      setResponse(data);
-      console.log(response);
-    });
+    socket.on("notes", (data) => {
+      setNotes(data);
+      console.log(data)
+    })
   }, []);
 
   const fretboardModel = {
@@ -75,8 +75,9 @@ const Fretboard = (props) => {
     let posX = 20;
     for (let string = 0; string < props.strings; string++) {
       strings.push(
-        <g transform={`translate(0, ${posX})`}>
+        <g key={string} transform={`translate(0, ${posX})`}>
           <line
+            key={string}
             x1="90"
             y1="20"
             x2={
@@ -87,7 +88,7 @@ const Fretboard = (props) => {
             }
             y2="20"
             stroke="white"
-            stroke-width="2"
+            strokeWidth="2"
           ></line>
         </g>
       );
@@ -98,7 +99,7 @@ const Fretboard = (props) => {
 
   const drawNote = () => {
     let positions = []
-    response.forEach((string) => {
+    notes.forEach((string) => {
 
     })
   }
@@ -109,6 +110,7 @@ const Fretboard = (props) => {
         <g transform="translate(0, 0) scale(1, 1)">
           <g>{drawSeparators(70)}</g>
           <g>{drawStrings(40)}</g>
+          <p>{notes["data"]}</p>
         </g>
       </svg>
     </div>

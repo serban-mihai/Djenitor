@@ -10,25 +10,19 @@ sys.path.append(".")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET")
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
 sensor = Teensy("/dev/ttyACM0", 2000000)
 instrument = Guitar(6, 24, "E")
 
 conn = sensor.connect()
-print(instrument.print_info())
-
-
-@socketio.on('json')
-def handle_message():
-    data = conn.json_read()
-    emit('message', data)
 
 
 @socketio.on('connect')
 def test_connect():
-    emit('my response', {'data': 'Connected'})
+    print("New client connected!")
+    emit('notes', {'data': 'Connected'})
 
 
 @socketio.on('disconnect')
