@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from models.Teensy import Teensy
 from models.Instrument import Guitar
@@ -10,17 +11,19 @@ sys.path.append(".")
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET")
 socketio = SocketIO(app)
+CORS(app)
 
 sensor = Teensy("/dev/ttyACM0", 2000000)
 instrument = Guitar(6, 24, "E")
 
+conn = sensor.connect()
+print(instrument.print_info())
 
-@app.route("/")
-def hello_world():
-    conn = sensor.connect()
-    instrument.build_dict_freatboard(round_freq=False)
-    about = instrument.print_info()
-    return f"Connection: {conn}\nAbout Instrument: {about}"
+
+@socketio.on('json')
+def handle_message():
+    data = conn.json_read()
+    emit('message', data)
 
 
 @socketio.on('connect')

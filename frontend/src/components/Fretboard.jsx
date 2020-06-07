@@ -10,6 +10,7 @@ const Fretboard = (props) => {
     const socket = socketIOClient(ENDPOINT);
     socket.on("message", data => {
       setResponse(data);
+      console.log(response);
     });
   }, []);
 

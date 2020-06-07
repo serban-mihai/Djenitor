@@ -4,7 +4,7 @@
  * Reference: https://github.com/serban-mihai/Djenitor.git
  */
 
-#define ADC_TEENSY_4 // Teensy 4.0 Microcontroller
+#define ADC_TEENSY_4                // Teensy 4.0 Microcontroller
 
 #include <ArduinoJson.h>
 #include <settings_defines.h>
@@ -13,30 +13,30 @@
 #include <array>
 #include <arduinoFFT.h>
 
-#define STRING_NUMBER 8       // Number of guitar strings
-#define VOLTAGE_THRERHOLD 100 // Max value for noise till pitch detection
+#define STRING_NUMBER 8                 // Number of guitar strings
+#define VOLTAGE_THRERHOLD 100           // Max value for noise till pitch detection
 
-#define SAMPLES 64              //Must be a power of 2
-#define SAMPLING_FREQUENCY 2700 //Hz, must be less than 10000 due to ADC
+#define SAMPLES 64                      // Must be a power of 2
+#define SAMPLING_FREQUENCY 2700         // Hz, 2700 for being able to analyze the highest frequency of the El String
 
 arduinoFFT FFT = arduinoFFT();
 
-unsigned int sampling_period_us;
-unsigned long microseconds;
+unsigned int sampling_period_us;        // Sampling period in MS
+unsigned long microseconds;             // MS from last analysis
 
-double vReal[STRING_NUMBER][SAMPLES];
-double vImag[STRING_NUMBER][SAMPLES];
+double vReal[STRING_NUMBER][SAMPLES];   // The Real part of the signal sprectum
+double vImag[STRING_NUMBER][SAMPLES];   // The Complex part of the signal sprectum
 
 // Global Pins and Names Arrays
 const int pins[8] = {A0, A1, A2, A3, A4, A5, A6, A7};
 const String names[8] = {"El", "Bl", "G", "D", "A", "Eh", "Bh", "F#"};
 
 DynamicJsonDocument encode(std::array<uint32_t, STRING_NUMBER> values);
-ADC *adc = new ADC(); // ADC Object that contains both ADC_0 and ADC_1
+ADC *adc = new ADC();                   // ADC Object that contains both ADC_0 and ADC_1
 
 void setup()
 {
-    // TODO: Adjust below values
+    // TODO: Adjust below values for best performance
     adc->adc0->setAveraging(0);                                           // set number of averages
     adc->adc0->setResolution(16);                                         // set bits of resolution
     adc->adc0->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_HIGH_SPEED); // change the conversion speed
@@ -101,9 +101,9 @@ DynamicJsonDocument encode(std::array<uint32_t, STRING_NUMBER> values)
     for (int string = 0; string < STRING_NUMBER; string++)
     {
         JsonObject string_obj = strings.createNestedObject();
-        // string_obj["name"] = names[string];
+        string_obj["name"] = names[string];
         string_obj["value"] = values[string];
-        // string_obj["pitched"] = string_obj["value"] > VOLTAGE_THRERHOLD ? true : false;
+        string_obj["pitched"] = string_obj["value"] > VOLTAGE_THRERHOLD ? true : false; // TODO: Needs revision
     }
     return doc;
 }
