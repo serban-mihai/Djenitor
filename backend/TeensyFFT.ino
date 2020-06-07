@@ -11,9 +11,21 @@
 #include <ADC.h>
 #include <ADC_util.h>
 #include <array>
+#include <arduinoFFT.h>
 
 #define STRING_NUMBER 8       // Number of guitar strings
 #define VOLTAGE_THRERHOLD 100 // Max value for noise till pitch detection
+
+#define SAMPLES 64              //Must be a power of 2
+#define SAMPLING_FREQUENCY 2700 //Hz, must be less than 10000 due to ADC
+
+arduinoFFT FFT = arduinoFFT();
+
+unsigned int sampling_period_us;
+unsigned long microseconds;
+
+double vReal[STRING_NUMBER][SAMPLES];
+double vImag[STRING_NUMBER][SAMPLES];
 
 // Global Pins and Names Arrays
 const int pins[8] = {A0, A1, A2, A3, A4, A5, A6, A7};
@@ -39,18 +51,37 @@ void setup()
     {
         pinMode(pins[pin], INPUT);
     }
+    sampling_period_us = round(1000000 * (1.0 / SAMPLING_FREQUENCY));
     Serial.begin(2000000);
 }
 
 void loop()
 {
-    std::array<uint32_t, STRING_NUMBER> values;
-    for (int couple = 0; couple < STRING_NUMBER; couple += 2)
+    for (int sample = 0; sample < SAMPLES; sample++)
     {
-        ADC::Sync_result pinCouple = adc->analogSynchronizedRead(pins[couple], pins[couple + 1]);
-        values[couple] = pinCouple.result_adc0;
-        values[couple + 1] = pinCouple.result_adc1;
+        for (int couple = 0; couple < STRING_NUMBER; couple += 2)
+        {
+            ADC::Sync_result pinCouple = adc->analogSynchronizedRead(pins[couple], pins[couple + 1]);
+            microseconds = micros(); //Overflows after around 70 minutes!
+            vReal[couple][sample] = pinCouple.result_adc0;
+            vImag[couple][sample] = 0;
+            vReal[couple + 1][sample] = pinCouple.result_adc1;
+            vImag[couple + 1][sample] = 0;
+            while (micros() < (microseconds + sampling_period_us))
+            {
+            }
+        }
     }
+
+    std::array<uint32_t, STRING_NUMBER> values;
+    for (int string = 0; string < STRING_NUMBER; string++)
+    {
+        FFT.Windowing(vReal[string], SAMPLES, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
+        FFT.Compute(vReal[string], vImag[string], SAMPLES, FFT_FORWARD);
+        FFT.ComplexToMagnitude(vReal[string], vImag[string], SAMPLES);
+        values[string] = FFT.MajorPeak(vReal[string], SAMPLES, SAMPLING_FREQUENCY);
+    }
+
     serializeJson(encode(values), Serial);
     Serial.print("\n");
     return;
@@ -70,9 +101,9 @@ DynamicJsonDocument encode(std::array<uint32_t, STRING_NUMBER> values)
     for (int string = 0; string < STRING_NUMBER; string++)
     {
         JsonObject string_obj = strings.createNestedObject();
-        string_obj["name"] = names[string];
+        // string_obj["name"] = names[string];
         string_obj["value"] = values[string];
-        string_obj["pitched"] = string_obj["value"] > VOLTAGE_THRERHOLD ? true : false;
+        // string_obj["pitched"] = string_obj["value"] > VOLTAGE_THRERHOLD ? true : false;
     }
     return doc;
 }
