@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:5000";
 
 const Fretboard = (props) => {
 
-  const [notes, setNotes] = useState("");
-
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("notes", (data) => {
-      setNotes(data);
-      console.log(data)
-    })
+    console.log(props)
   }, []);
 
   const fretboardModel = {
@@ -52,23 +44,23 @@ const Fretboard = (props) => {
     return separators.map((item) => item);
   };
 
-  const drawMarkers = (spacing) => {
-    const positions = [1, 3, 5, 7, 9, 12, 15, 17, 19, 21, 24];
-    let markers = [];
-    let posX = 220;
-    positions.forEach((element) => {
-      markers.push(
-        <circle
-          r="10"
-          cx={String(posX + element * 40)}
-          cy="275"
-          fill="lightgrey"
-          stroke="none"
-        ></circle>
-      );
-    });
-    return markers;
-  };
+  // const drawMarkers = (spacing) => {
+  //   const positions = [1, 3, 5, 7, 9, 12, 15, 17, 19, 21, 24];
+  //   let markers = [];
+  //   let posX = 220;
+  //   positions.forEach((element) => {
+  //     markers.push(
+  //       <circle
+  //         r="10"
+  //         cx={String(posX + element * 40)}
+  //         cy="275"
+  //         fill="lightgrey"
+  //         stroke="none"
+  //       ></circle>
+  //     );
+  //   });
+  //   return markers;
+  // };
 
   const drawStrings = (spacing) => {
     let strings = [];
@@ -97,20 +89,16 @@ const Fretboard = (props) => {
     return strings;
   };
 
-  const drawNote = () => {
-    let positions = []
-    notes.forEach((string) => {
-
-    })
-  }
+  // const drawNote = () => {
+  //   let positions = []
+  // }
 
   return (
-    <div className="Fretboard">
-      <svg className="Container" width="2000" height="400">
+    <div className="Fretboard-Container">
+      <svg className="Fretboard" width="2000" height="400">
         <g transform="translate(0, 0) scale(1, 1)">
           <g>{drawSeparators(70)}</g>
           <g>{drawStrings(40)}</g>
-          <p>{notes["data"]}</p>
         </g>
       </svg>
     </div>
