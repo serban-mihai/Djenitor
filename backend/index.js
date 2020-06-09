@@ -18,14 +18,18 @@ const Readline = require('@serialport/parser-readline');
 const parser = new Readline();
 serial.pipe(parser);
 
+let users = []
+
 io.on("connection", (socket) => {
-    console.log("New client connected");
+    console.log(`New client connected: ${socket.id}`);
 
     parser.on("data", (line) => {
         socket.emit("notes", JSON.parse(line));
     });
 
-    socket.on("disconnect", () => console.log("Client disconnected"));
+    socket.on("disconnect", () => {
+        console.log(`Client disconnected: ${socket.id}`);
+    });
 });
 
 
