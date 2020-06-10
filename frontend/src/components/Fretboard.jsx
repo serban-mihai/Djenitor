@@ -2,7 +2,19 @@ import React, { useState, useEffect } from "react";
 
 const Fretboard = (props) => {
 
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState({
+    "timestamp": 0,
+    "strings": [
+      {"name": "El", "value": 0, "pitched": false},
+      {"name": "Bl", "value": 0, "pitched": false},
+      {"name": "G",  "value": 0, "pitched": false},
+      {"name": "D",  "value": 0, "pitched": false},
+      {"name": "A",  "value": 0, "pitched": false},
+      {"name": "Eh", "value": 0, "pitched": false},
+      {"name": "Eh", "value": 0, "pitched": false},
+      {"name": "F#", "value": 0, "pitched": false},
+    ]
+  });
 
   useEffect(() => {
     props.socket.on("notes", (data) => {
