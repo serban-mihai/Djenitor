@@ -32,13 +32,7 @@ const Fretboard = (props) => {
           x={String(posX)}
           y="35"
           width="5"
-          height={
-            {
-              6: "210",
-              7: "250",
-              8: "290",
-            }[props.strings]
-          }
+          height={{ 6: "210", 7: "250", 8: "290"}[props.strings]}
           fill={sep === 0 ? "black" : "gray"}
           stroke="grey"
           strokeWidth="1"
@@ -79,27 +73,15 @@ const Fretboard = (props) => {
             key={string}
             x1="90"
             y1="20"
-            x2={
-              {
-                22: "1640",
-                24: "1780",
-              }[props.frets]
-            }
+            x2={{ 22: "1640", 24: "1780"}[props.frets]}
             y2="20"
             stroke="white"
             strokeWidth="2"
           ></line>
           <circle r="15" cy="20" cx={posNote} fill="white" stroke="grey" strokeWidth="2"></circle>
           <text transform="translate(0, 0) scale(1, 1)" textAnchor="middle" x="50" y="25">{
-            {
-              0: "El",
-              1: "Bl",
-              2: "G",
-              3: "D",
-              4: "A",
-              5: "Eh",
-              6: "Bh",
-              7: "F#",
+            { 
+              0: "El", 1: "Bl", 2: "G", 3: "D", 4: "A", 5: "Eh", 6: "Bh", 7: "F#",
             }[string]
           }</text>
         </g>
