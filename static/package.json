@@ -1,0 +1,63 @@
+{
+  "name": "@serban-mihai/static",
+  "description": "Djenitor Static Website",
+  "version": "1.0.0",
+  "author": "Serban Mihai-Ciprian <mihai.serban@student.usv.ro>",
+  "dependencies": {
+    "ftp-deploy": "^2.3.3",
+    "gatsby": "2.10.4",
+    "gatsby-plugin-manifest": "2.2.0",
+    "gatsby-plugin-postcss": "2.1.0",
+    "gatsby-plugin-purgecss": "4.0.0",
+    "gatsby-plugin-react-helmet": "3.1.0",
+    "graphql": "14.3.1",
+    "prop-types": "15.7.2",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-helmet": "5.2.1"
+  },
+  "keywords": [
+    "gatsby",
+    "tailwind",
+    "tailwindcss",
+    "purgecss"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "analyze:lint": "eslint --ext .jsx --ext .js .",
+    "analyze:prettier": "prettier --list-different '**/*.{js,css,md,json}'",
+    "analyze": "npm run analyze:lint && npm run analyze:prettier",
+    "build": "yarn run clean && gatsby build",
+    "deploy:dev": "gatsby build --prefix-paths && aws s3 sync public s3://dev.djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
+    "deploy:stage": "gatsby build --prefix-paths && aws s3 sync public s3://stage.djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
+    "deploy:prod": "gatsby build --prefix-paths && aws s3 sync public s3://djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
+    "develop": "gatsby develop",
+    "fix:lint": "eslint --ext .jsx --ext .js . --fix",
+    "fix:prettier": "prettier --write '**/*.{js,css,md,json}'",
+    "fix": "npm run fix:lint && npm run fix:prettier",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.2",
+    "eslint": "6.0.0",
+    "eslint-config-react-app": "4.0.1",
+    "eslint-plugin-flowtype": "3.11.1",
+    "eslint-plugin-import": "2.17.3",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.14.1",
+    "prettier": "1.18.2",
+    "tailwindcss": "1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/serban-mihai/Djenitor/static"
+  },
+  "bugs": {
+    "url": "https://github.com/serban-mihai/Djenitor/static/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
