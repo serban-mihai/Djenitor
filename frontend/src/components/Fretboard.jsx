@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 
 const Fretboard = (props) => {
 
+  const [notes, setNotes] = useState("");
+
   useEffect(() => {
-    console.log(props)
-  }, []);
+    props.socket.on("notes", (data) => {
+      setNotes(data);
+    })
+    //printNotes();
+  }, [notes]);
 
   const fretboardModel = {
     "El": [330, 349, 370, 392, 415, 466, 494, 523, 554, 587, 622, 659, 698, 740, 784, 831, 880, 932, 988, 1047, 1109, 1175, 1245, 1319],
@@ -63,10 +68,12 @@ const Fretboard = (props) => {
   // };
 
   const drawStrings = (spacing) => {
-    let strings = [];
+    let str = [];
     let posX = 20;
+    let posNote = 50;
+    const {timestamp, strings} = notes;
     for (let string = 0; string < props.strings; string++) {
-      strings.push(
+      str.push(
         <g key={string} transform={`translate(0, ${posX})`}>
           <line
             key={string}
@@ -82,20 +89,38 @@ const Fretboard = (props) => {
             stroke="white"
             strokeWidth="2"
           ></line>
+          <circle r="15" cy="20" cx={posNote} fill="white" stroke="grey" strokeWidth="2"></circle>
+          <text transform="translate(0, 0) scale(1, 1)" textAnchor="middle" x="50" y="25">{
+            {
+              0: "El",
+              1: "Bl",
+              2: "G",
+              3: "D",
+              4: "A",
+              5: "Eh",
+              6: "Bh",
+              7: "F#",
+            }[string]
+          }</text>
         </g>
       );
       posX += spacing;
     }
-    return strings;
+    return str;
   };
 
-  // const drawNote = () => {
-  //   let positions = []
-  // }
+  const printNotes = () => {
+    console.log(notes)
+    // Testing Deconstruct
+    const {timestamp, strings} = notes;
+    console.log(`Timestamp: ${timestamp}`);
+    console.log("Strings:");
+    console.log(strings)
+  }
 
   return (
-    <div className="Fretboard-Container">
-      <svg className="Fretboard" width="2000" height="400">
+    <div className="Fretboard-Outer">
+      <svg className="Fretboard-Inner" width="2000" height="400">
         <g transform="translate(0, 0) scale(1, 1)">
           <g>{drawSeparators(70)}</g>
           <g>{drawStrings(40)}</g>
