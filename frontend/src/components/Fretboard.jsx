@@ -73,11 +73,19 @@ const Fretboard = (props) => {
   //   return markers;
   // };
 
+  const drawNotes = (string) => {
+    let temp = [];
+    const notation = {0: "El", 1: "Bl", 2: "G", 3: "D", 4: "A", 5: "Eh", 6: "Bh", 7: "F#"}[string];
+    const {timestamp, strings} = notes;
+    let lastFreq = 0;
+    temp.push(<circle r="15" cy="20" cx={strings[string]["value"]} fill="white" stroke="grey" strokeWidth="2"></circle>)
+    return temp.map((item) => item);
+  }
+
   const drawStrings = (spacing) => {
     let str = [];
     let posX = 20;
     let posNote = 50;
-    const {timestamp, strings} = notes;
     for (let string = 0; string < props.strings; string++) {
       str.push(
         <g key={string} transform={`translate(0, ${posX})`}>
@@ -91,6 +99,7 @@ const Fretboard = (props) => {
             strokeWidth="2"
           ></line>
           <circle r="15" cy="20" cx={posNote} fill="white" stroke="grey" strokeWidth="2"></circle>
+          {drawNotes(string)}
           <text transform="translate(0, 0) scale(1, 1)" textAnchor="middle" x="50" y="25">{
             { 
               0: "El", 1: "Bl", 2: "G", 3: "D", 4: "A", 5: "Eh", 6: "Bh", 7: "F#",
