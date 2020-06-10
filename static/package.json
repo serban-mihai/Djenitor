@@ -52,10 +52,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/serban-mihai/Djenitor/static"
+    "url": "https://github.com/serban-mihai/Djenitor"
   },
   "bugs": {
-    "url": "https://github.com/serban-mihai/Djenitor/static/issues"
+    "url": "https://github.com/serban-mihai/Djenitor/issues"
   },
   "publishConfig": {
     "access": "public"
