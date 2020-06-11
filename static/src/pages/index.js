@@ -5,7 +5,7 @@ import Link from '../components/link'
 import Button from '../components/btn'
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { FaGithub, FaGuitar, FaLinux, FaWindows, FaApple } from 'react-icons/fa'
+import { FaGithub, FaGuitar, FaLinux, FaWindows, FaApple, FaDocker } from 'react-icons/fa'
 import Form from '../components/form'
 import Slider from '../components/slider'
 import Box from '../components/box'
@@ -56,6 +56,7 @@ export default () => (
       </Row>
     </Container>
     <div className="text-center py-5">
+    <h2 className="text-center mb-4">or use Containers!</h2>
       <Button to="https://github.com/serban-mihai/Djenitor" className="btn btn-primary btn-lg">
         <FaGithub className="mr-1"/>
         View on Github

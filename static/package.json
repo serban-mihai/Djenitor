@@ -48,6 +48,9 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
+    "deploy:dev": "gatsby build --prefix-paths && aws s3 sync public s3://dev.djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
+    "deploy:stage": "gatsby build --prefix-paths && aws s3 sync public s3://stage.djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
+    "deploy:prod": "gatsby build --prefix-paths && aws s3 sync public s3://djenitor.com/ --cache-control=max-age=300 --acl=public-read --follow-symlinks --delete",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
