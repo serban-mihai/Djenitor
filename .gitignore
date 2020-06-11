@@ -7,3 +7,6 @@
 # backend/env
 # backend/.flaskenv
 # _pycache_
+
+*.pem
+notes
