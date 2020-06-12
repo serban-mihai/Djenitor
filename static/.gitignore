@@ -13,3 +13,4 @@ yarn-error.log
 # deployment-specific configs
 now.json
 deploy.js
+notes
