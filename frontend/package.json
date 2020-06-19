@@ -1,5 +1,6 @@
 {
-  "name": "frontend",
+  "name": "@serban-mihai/frontend",
+  "description": "Djenitor Front-End React App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,5 +37,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/serban-mihai/Djenitor"
+  },
+  "bugs": {
+    "url": "https://github.com/serban-mihai/Djenitor/issues"
   }
 }

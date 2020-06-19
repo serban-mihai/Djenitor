@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="512" height="512" src="./resources/DjenitorLogo.png">
+  <img width="512" height="512" src="./resources/DjenitorLogoBlack.png">
 </p>
 
 [![License](https://img.shields.io/github/license/day8/re-frame.svg)](license.txt)
