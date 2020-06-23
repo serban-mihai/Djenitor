@@ -3,5 +3,7 @@
 # Visual Studio Code
 .vscode
 
+notes
 # Credentials
 *.pem
+
