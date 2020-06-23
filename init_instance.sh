@@ -11,7 +11,8 @@ NC="\033[0m"
 
 USER=ubuntu
 REPO="git@github.com:serban-mihai/Djenitor.git"
-DOMAIN="live.djenitor.com"
+APP_DOMAIN="live.djenitor.com"
+API_DOMAIN="api.djenitor.com"
 
 set -e
 if [[ $EUID -ne 0 ]]; then
@@ -34,17 +35,18 @@ apr install git -y                              # For Source Controll
 apt install docker-ce docker-ce-cli containerd.io docker-compose -y
 usermod -aG docker ${USER}
 
-# Setting up the Webserver
-cat << EOF > /etc/nginx/sites-available/djenitor
+# Setting up the Reverse Proxy
+# App Subdomain:
+cat << EOF > /etc/nginx/sites-available/djenitor_app
 upstream app_server_djenitor {
     server 0.0.0.0:8001 fail_timeout=0;
 }
 
 server {
-    server_name ${DOMAIN};
+    server_name ${APP_DOMAIN};
 
-    access_log  /var/log/nginx/djenitor-access.log;
-    error_log  /var/log/nginx/djenitor-error.log info;
+    access_log  /var/log/nginx/djenitor-app-access.log;
+    error_log  /var/log/nginx/djenitor-app-error.log info;
 
     keepalive_timeout 5;
 
@@ -63,17 +65,53 @@ server {
 }
 
 server {
-    server_name ${DOMAIN};
+    server_name ${APP_DOMAIN};
     listen 80;
 }
 EOF
-ln -s /etc/nginx/sites-available/djenitor /etc/nginx/sites-enabled/djenitor
+
+# App Subdomain:
+cat << EOF > /etc/nginx/sites-available/djenitor_api
+upstream api_server_djenitor {
+    server 0.0.0.0:8002 fail_timeout=0;
+}
+
+server {
+    server_name ${API_DOMAIN};
+
+    access_log  /var/log/nginx/djenitor-api-access.log;
+    error_log  /var/log/nginx/djenitor-api-error.log info;
+
+    keepalive_timeout 5;
+
+    location / {
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header Host \$http_host;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_redirect off;
+        client_max_body_size 25M;
+
+        if (!-f \$request_filename) {
+            proxy_pass http://api_server_djenitor;
+            break;
+        }
+    }
+}
+
+server {
+    server_name ${API_DOMAIN};
+    listen 80;
+}
+EOF
+
+ln -s /etc/nginx/sites-available/djenitor_app /etc/nginx/sites-enabled/djenitor_app
+ln -s /etc/nginx/sites-available/djenitor_api /etc/nginx/sites-enabled/djenitor_api
 service nginx reload
 service nginx restart
-certbot -d ${DOMAIN} -y
+certbot -d ${APP_DOMAIN} -d ${API_DOMAIN} -y
 
 # Clone and Start Containers (Note that the SSH Pub Key needs to be present into the Deployment Keys of the Repo)
 cd ${HOME}
 git clone ${REPO} -y
-cd Djenitor
+cd Djenitor/server
 docker-compose up -d
