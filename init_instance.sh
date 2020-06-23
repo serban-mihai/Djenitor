@@ -39,7 +39,7 @@ usermod -aG docker ${USER}
 # App Subdomain:
 cat << EOF > /etc/nginx/sites-available/djenitor_app
 upstream app_server_djenitor {
-    server 0.0.0.0:8001 fail_timeout=0;
+    server 0.0.0.0:8080 fail_timeout=0;
 }
 
 server {
@@ -73,7 +73,7 @@ EOF
 # App Subdomain:
 cat << EOF > /etc/nginx/sites-available/djenitor_api
 upstream api_server_djenitor {
-    server 0.0.0.0:8002 fail_timeout=0;
+    server 0.0.0.0:8001 fail_timeout=0;
 }
 
 server {
