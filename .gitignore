@@ -3,10 +3,7 @@
 # Visual Studio Code
 .vscode
 
-# Python 3.7 Env
-# backend/env
-# backend/.flaskenv
-# _pycache_
-
-*.pem
 notes
+# Credentials
+*.pem
+
