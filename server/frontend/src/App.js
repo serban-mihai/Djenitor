@@ -4,7 +4,7 @@ import Fretboard from "./components/Fretboard";
 import Logo from "./logo192.png";
 import "./App.css";
 
-const ENDPOINT = "http://127.0.0.1:5000";
+const ENDPOINT = "https://api.djenitor.com";
 
 const App = () => {
   

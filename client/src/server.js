@@ -11,6 +11,11 @@ const io = socketIo(server);
 const SerialPort = require("serialport");
 const Readline = require('@serialport/parser-readline');
 
+const ENDPOINT = "https://api.djenitor.com";
+
+const ioClient = require("socket.io-client");
+const client = ioClient(ENDPOINT, {reconnection: false});
+
 const teensy = {
     port: "",
     baudrate: 2000000,
@@ -19,18 +24,19 @@ const teensy = {
 }
 
 io.on("connection", (socket) => {
-    console.log(`> App Started: ${socket.id}`);
+    console.log(`> App Connected: ${socket.id}`);
 
     if(teensy.serial !== null) {
         teensy.parser.on("data", (line) => {
             socket.emit("notes", JSON.parse(line));
+            client.emit("relay", JSON.parse(line));
         });
     } else {
         console.log(">>> Instrument not found!");
     }
 
     socket.on("disconnect", () => {
-        console.log(`> App Closed: ${socket.id}`);
+        console.log(`> App Disconnected: ${socket.id}`);
     });
 });
 
@@ -39,12 +45,15 @@ app.use(bodyParser.json());
 app.route("/")
     .get((req, res) => {
         res.setHeader("Content-Type", "application/json");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         res.send({"Status": "Up And Running"})
+        console.log(`>>> ${req.method} "${req.path}" Status: ${res.statusCode}`);
     });
 
 app.route("/sensor")
     .get((req, res) => {
         res.setHeader("Content-Type", "application/json");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         try {
             res.send({"port": teensy.port, "baudrate": teensy.baudrate, "serial": teensy.serial === null ? "disconnected" : "connected"});
             console.log(`>>> ${req.method} "${req.path}" Status: ${res.statusCode}`);
@@ -57,6 +66,7 @@ app.route("/sensor")
 app.route("/sensor/port")
     .get(async (req, res) => {
         res.setHeader("Content-Type", "application/json");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         await SerialPort.list()
         .then((ports) => {
             res.send(ports);
@@ -69,6 +79,7 @@ app.route("/sensor/port")
     })
     .post((req, res) => {
         res.setHeader("Content-Type", "application/json");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         teensy.port = req.body.port;
         try {
             if(teensy.serial === null) {
@@ -85,6 +96,7 @@ app.route("/sensor/port")
     })
     .delete(async (req, res) => {
         res.setHeader("Content-Type", "application/json");
+        res.setHeader("Access-Control-Allow-Origin", "*");
         try {
             await teensy.serial.close();
             teensy.serial = null;
