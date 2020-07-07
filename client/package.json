@@ -1,8 +1,10 @@
 {
-  "name": "@serban-mihai/frontend",
-  "description": "Djenitor Front-End React App",
+  "name": "@serban-mihai/client",
+  "description": "Djenitor Electron App",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "src/electron-starter.js",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
@@ -11,17 +13,22 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "nodemon": "^2.0.4",
     "notistack": "^0.9.16",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "serialport": "^9.0.0",
+    "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "dev": "nf start -p 3000"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,5 +51,9 @@
   },
   "bugs": {
     "url": "https://github.com/serban-mihai/Djenitor/issues"
+  },
+  "devDependencies": {
+    "electron": "^9.1.0",
+    "foreman": "^3.0.1"
   }
 }
