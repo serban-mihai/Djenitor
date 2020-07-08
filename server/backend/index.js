@@ -15,7 +15,6 @@ io.on("connection", (socket) => {
     console.log(`> Client Connected: ${socket.id}`);
 
     socket.on("relay", (line) => {
-        console.log(`Relay: ${JSON.parse(line)}`);
         socket.emit("notes", JSON.parse(line));
     });
 
