@@ -28,8 +28,9 @@ io.on("connection", (socket) => {
 
     if(teensy.serial !== null) {
         teensy.parser.on("data", (line) => {
+            // console.log(`Raw: ${line}\nParsed: ${JSON.parse(line)}`);
             socket.emit("notes", JSON.parse(line));
-            client.emit("relay", JSON.parse(line));
+            client.emit("relay", line);
         });
     } else {
         console.log(">>> Instrument not found!");
