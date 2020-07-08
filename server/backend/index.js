@@ -15,6 +15,7 @@ io.on("connection", (socket) => {
     console.log(`> Client Connected: ${socket.id}`);
 
     socket.on("relay", (line) => {
+        console.log(`Relay: ${JSON.parse(line)}`);
         socket.emit("notes", JSON.parse(line));
     });
 
@@ -26,7 +27,7 @@ io.on("connection", (socket) => {
 app.route("/")
     .get((req, res) => {
         res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Origin", "https://live.djenitor.com");
         res.send({"Status": "Up And Running"})
         console.log(`>>> ${req.method} "${req.path}" Status: ${res.statusCode}`);
     });
