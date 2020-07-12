@@ -18,7 +18,6 @@ const Fretboard = (props) => {
 
   useEffect(() => {
     props.socket.on("notes", (data) => {
-      console.log(`Relay: ${data}`);
       setNotes(data);
     });
     props.socket.on("error", (err) => {

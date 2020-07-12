@@ -29,7 +29,7 @@ apt-key fingerprint 0EBFCD88
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
 apt update -y && apt upgrade -y                 # Update Repo and Upgrade Distro
-apt install nginx-full -y                       # Used as a Reverse Proxy -y
+apt install nginx-full nginx-extras -y          # Used as a Reverse Proxy -y
 apt install certbot python3-certbot-nginx -y    # For issuing the SSL Certificate -y
 apr install git -y                              # For Source Controll
 apt install docker-ce docker-ce-cli containerd.io docker-compose -y
@@ -39,7 +39,7 @@ usermod -aG docker ${USER}
 # App Subdomain:
 cat << EOF > /etc/nginx/sites-available/djenitor_app
 upstream app_server_djenitor {
-    server 0.0.0.0:8001 fail_timeout=0;
+    server 0.0.0.0:8080 fail_timeout=0;
 }
 
 server {
@@ -70,10 +70,10 @@ server {
 }
 EOF
 
-# App Subdomain:
+# API Subdomain:
 cat << EOF > /etc/nginx/sites-available/djenitor_api
 upstream api_server_djenitor {
-    server 0.0.0.0:8002 fail_timeout=0;
+    server 0.0.0.0:8001 fail_timeout=0;
 }
 
 server {
@@ -85,6 +85,15 @@ server {
     keepalive_timeout 5;
 
     location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        more_set_headers 'Access-Control-Allow-Origin:https://${APP_DOMAIN}';
+        more_set_headers 'Access-Control-Allow-Methods: GET,POST,OPTIONS';
+        more_set_headers 'Access-Control-Allow-Credentials:true';
+        more_set_headers 'Access-Control-Allow-Headers:DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header Host \$http_host;
         proxy_set_header X-Forwarded-Proto \$scheme;
@@ -96,6 +105,15 @@ server {
             break;
         }
     }
+
+    location /socket.io/ {
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_pass http://api_server_djenitor/socket.io/;
+     }
 }
 
 server {
