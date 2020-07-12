@@ -13,7 +13,7 @@ const ControlPanel = (props) => {
 
     const corsTest = async () => {
         const result = await axios.get(url);
-        console.log(`Response: ${JSON.parse(result)}`);
+        console.log(`Response: ${JSON.parse(result.data)}`);
         setCors(result);
     };
 
