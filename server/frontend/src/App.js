@@ -15,7 +15,11 @@ const App = () => {
   useEffect(() => {
     socket.on("connected", () => {
       setConnected(true);
-    })
+    });
+
+    socket.on("error", (err) => {
+      console.log(`Socket.IO Front-end Error: ${err}`);
+    });
     
     return () => {
       socket.off("disconnected");

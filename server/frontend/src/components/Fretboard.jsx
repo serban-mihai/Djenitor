@@ -20,7 +20,10 @@ const Fretboard = (props) => {
     props.socket.on("notes", (data) => {
       console.log(`Relay: ${data}`);
       setNotes(data);
-    })
+    });
+    props.socket.on("error", (err) => {
+      console.log(`Socket.IO Front-end Error: ${err}`);
+    });
     //printNotes();
   }, [notes]);
 
