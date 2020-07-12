@@ -7,3 +7,5 @@ notes
 # Credentials
 *.pem
 
+# Backup
+backup

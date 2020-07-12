@@ -3,8 +3,9 @@ import socketIOClient from "socket.io-client";
 import Fretboard from "./components/Fretboard";
 import Logo from "./logo192.png";
 import "./App.css";
+import ControlPanel from "./components/ControlPanel";
 
-const ENDPOINT = "http://127.0.0.1:5000";
+const ENDPOINT = "https://api.djenitor.com";
 
 const App = () => {
   
@@ -24,9 +25,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          {/* <img className="Logo" src={Logo}></img> */}
-        </p>
+        <ControlPanel endpoint={ENDPOINT}></ControlPanel>
       </header>
       <footer className="App-footer">
         <Fretboard strings={8} frets={24} socket={socket}></Fretboard>
