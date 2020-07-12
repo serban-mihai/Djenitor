@@ -10,7 +10,7 @@ const ENDPOINT = "https://api.djenitor.com";
 const App = () => {
   
   const [connected, setConnected] = useState(false);
-  const socket = socketIOClient(ENDPOINT, {reconnection: false});
+  const socket = socketIOClient(ENDPOINT, {reconnection: false, path: "/socket.io/"});
 
   useEffect(() => {
     socket.on("connected", () => {

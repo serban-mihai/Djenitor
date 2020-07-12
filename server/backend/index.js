@@ -15,7 +15,7 @@ io.on("connection", (socket) => {
     console.log(`> Client Connected: ${socket.id}`);
 
     socket.on("relay", (line) => {
-        socket.emit("notes", JSON.parse(line));
+        socket.broadcast.emit("notes", JSON.parse(line));
     });
 
     socket.on("disconnect", () => {
