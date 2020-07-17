@@ -25,7 +25,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <ControlPanel endpoint={ENDPOINT}></ControlPanel>
+        <ControlPanel endpoint={ENDPOINT} socket={socket}></ControlPanel>
       </header>
       <footer className="App-footer">
         <Fretboard strings={8} frets={24} socket={socket}></Fretboard>

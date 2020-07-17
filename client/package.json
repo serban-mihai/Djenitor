@@ -1,6 +1,7 @@
 {
-  "name": "@serban-mihai/client",
+  "name": "Djenitor",
   "description": "Djenitor Electron App",
+  "author": "Serban Mihai-Ciprian <mihai.ciprian.serban@gmail.com>",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
@@ -13,6 +14,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "notistack": "^0.9.16",
     "react": "^16.13.1",
@@ -28,7 +31,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "dev": "nf start -p 3000"
+    "dev": "nf start -p 3000",
+    "dist:linux": "electron-builder --linux",
+    "dist:pack": "electron-builder --dir"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,6 +59,27 @@
   },
   "devDependencies": {
     "electron": "^9.1.0",
+    "electron-builder": "^22.7.0",
     "foreman": "^3.0.1"
+  },
+  "build": {
+    "productName": "Djenitor",
+    "appId": "com.djenitor.client",
+    "extends": null,
+    "asar": false,
+    "files": [
+      "src/**/*",
+      "public/*",
+      "Procfile",
+      "node_modules/**/*",
+      "package.json",
+      "yarn.lock"
+    ],
+    "linux": {
+      "icon": "public/logo512.png",
+      "target": [
+        "AppImage"
+      ]
+    }
   }
 }

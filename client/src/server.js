@@ -4,9 +4,12 @@ const bodyParser = require('body-parser');
 const socketIo = require("socket.io");
 const port = process.env.PORT || 5000;
 
+const cors = require("cors");
 const app = express();
+
 const server = http.createServer(app);
 const io = socketIo(server);
+app.use(cors({origin: "http://localhost:3000"}));
 
 const SerialPort = require("serialport");
 const Readline = require('@serialport/parser-readline');
