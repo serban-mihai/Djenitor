@@ -28,7 +28,7 @@ const App = () => {
         <ControlPanel endpoint={ENDPOINT} socket={socket}></ControlPanel>
       </header>
       <footer className="App-footer">
-        <Fretboard strings={8} frets={24} socket={socket}></Fretboard>
+        <Fretboard strings={6} frets={24} socket={socket}></Fretboard>
       </footer>
     </div>
   );
