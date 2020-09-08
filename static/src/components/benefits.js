@@ -58,7 +58,7 @@ export default () => (
   <StaticQuery
     query={graphql`
       query BenefitsQuery {
-        file(relativePath: {eq: "sample.png"}) {
+        file(relativePath: {eq: "logo512.png"}) {
           id
           childImageSharp {
             fluid {

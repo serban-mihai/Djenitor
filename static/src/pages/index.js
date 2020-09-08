@@ -50,9 +50,9 @@ export default () => (
     <Container className="py-5">
       <h2 className="text-center mb-4">Get the App</h2>
       <Row>
-        <Service icon="linux" title="GNU/Linux" to="https://djenitor-releases.s3.amazonaws.com/test.exe"/>
-        <Service icon="windows" title="Windows" to="https://djenitor-releases.s3.amazonaws.com/test.exe"/>
-        <Service icon="mac" title="MacOS" to="https://djenitor-releases.s3.amazonaws.com/test.exe"/>
+        <Service icon="linux" title="GNU/Linux" to="https://djenitor-releases.s3.amazonaws.com/Djenitor-0.1.0.AppImage"/>
+        <Service icon="windows" title="Windows" to="https://djenitor-releases.s3.amazonaws.com/Djenitor-0.1.0.exe"/>
+        <Service icon="mac" title="MacOS" to="https://djenitor-releases.s3.amazonaws.com/Djenitor-0.1.0.app"/>
       </Row>
     </Container>
     <div className="text-center py-5">

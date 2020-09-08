@@ -33,6 +33,9 @@
     "electron": "electron .",
     "dev": "nf start -p 3000",
     "dist:linux": "electron-builder --linux",
+    "dist:windows": "electron-builder --windows",
+    "dist:mac": "electron-builder --mac",
+    "dist:all": "electron-builder -mwl",
     "dist:pack": "electron-builder --dir"
   },
   "eslintConfig": {
