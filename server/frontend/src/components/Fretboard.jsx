@@ -80,9 +80,19 @@ const Fretboard = (props) => {
     let temp = [];
     const notation = {0: "El", 1: "Bl", 2: "G", 3: "D", 4: "A", 5: "Eh", 6: "Bh", 7: "F#"}[string];
     const {timestamp, strings} = notes;
+    const position = fretboardModel[strings[string]["name"]].indexOf(strings[string]["value"]);
+    const shift = 52;
+    const posX = (70 * position);
     let lastFreq = 0;
     if(strings[string]["value"] !== 0) {
-      temp.push(<circle r="15" cy="20" cx={strings[string]["value"]} fill="orange" stroke="grey" strokeWidth="2"></circle>)
+      temp.push(<circle 
+        r="15" 
+        cy="20" 
+        cx={posX !== 0 ? posX + shift : 50}
+        fill="orange" 
+        stroke="grey" 
+        strokeWidth="2">
+        </circle>)
     }
     return temp.map((item) => item);
   }
