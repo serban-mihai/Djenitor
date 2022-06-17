@@ -61,7 +61,7 @@
     "url": "https://github.com/serban-mihai/Djenitor/issues"
   },
   "devDependencies": {
-    "electron": "^9.1.0",
+    "electron": "^15.5.5",
     "electron-builder": "^22.7.0",
     "foreman": "^3.0.1"
   },
